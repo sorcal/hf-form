@@ -3,13 +3,17 @@ export interface Rate {
   monthlyRate: number
 }
 
+// might be worth to move to .env
+const GRAPHQL_API_URL = 'https://hypofriend.de/q'
+
 export async function fetchMortgageRates(payload: {
   propertyPrice: number
   loanAmount: number
   annualRepayRate: number
 }): Promise<Record<string, Rate>> {
   try {
-    const fetchResponse = await fetch('https://hypofriend.de/q', {
+    // Apollo client is a better choice overall but I'm not doing it in this test task
+    const fetchResponse = await fetch(GRAPHQL_API_URL, {
       headers: {
         accept: '*/*',
         'accept-language': 'en,de;q=0.9,cs;q=0.8',
