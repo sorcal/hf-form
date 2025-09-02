@@ -11,7 +11,7 @@
 import MortgageForm from '../components/MortgageForm.vue'
 import MortgageRatesTable from '@/components/MortgageRatesTable.vue'
 import { ref } from 'vue'
-import { fetchRates, type Rate } from '@/api/mortgageApi.ts'
+import { fetchMortgageRates, type Rate } from '@/api/mortgageApi.ts'
 
 interface RateWithYears extends Rate {
   years: string
@@ -25,7 +25,7 @@ async function getRates(data) {
   rates.value = []
 
   try {
-    const res = await fetchRates({
+    const res = await fetchMortgageRates({
       propertyPrice: data.propertyPrice!,
       loanAmount: data.loanAmount,
       annualRepayRate: data.annualRepayRate!,
