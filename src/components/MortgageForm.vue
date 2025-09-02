@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit">
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <price-input
+      <PriceInput
         label="Property Purchase Price"
         placeholder="Enter price"
         :model-value="formData.purchasePrice"
@@ -9,7 +9,7 @@
         @update:modelValue="updatePurchasePrice($event)"
       />
 
-      <price-input
+      <PriceInput
         label="Total Savings"
         placeholder="Enter your savings"
         :model-value="formData.totalSavings"
@@ -17,9 +17,9 @@
         @update:modelValue="updateTotalSavings($event)"
       />
 
-      <boolean-input label="Real Estate Commission" v-model="formData.realEstateCommission" />
+      <BooleanInput label="Real Estate Commission" v-model="formData.realEstateCommission" />
 
-      <number-input
+      <NumberInput
         label="Annual Repayment Rate (%)"
         placeholder="Enter rate"
         :model-value="formData.annualRepayRate"
@@ -35,14 +35,21 @@
         Submit
       </button>
     </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+      <SmallCardWithValue title="Implied Loan" :text="`${Math.round(impliedLoan)} €`" />
+      <SmallCardWithValue title="Loan to Value" :text="`${loanToValue.toFixed(2)} %`" />
+    </div>
   </form>
 </template>
 
 <script setup lang="ts">
 import PriceInput from '@/components/common/PriceInput.vue'
-import { reactive, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import BooleanInput from '@/components/common/BooleanInput.vue'
 import NumberInput from '@/components/common/NumberInput.vue'
+import SmallCardWithValue from '@/components/common/SmallCardWithValue.vue'
+import { calculateImpliedLoan, calculateLoanToValue } from '@/utils/loans'
 
 interface FormData {
   purchasePrice: number | null
@@ -52,7 +59,13 @@ interface FormData {
 }
 
 const emit = defineEmits<{
-  submit: [data: FormData]
+  submit: [
+    data: {
+      loanAmount: number
+      propertyPrice: number
+      annualRepayRate: number
+    },
+  ]
 }>()
 
 const formData = reactive<FormData>({
@@ -123,13 +136,41 @@ function validateTotalSavings() {
   formDataErrors.totalSavings = ''
 }
 
+const isFormValid = computed(() => {
+  return (
+    !formDataErrors.purchasePrice && !formDataErrors.totalSavings && !formDataErrors.annualRepayRate
+  )
+})
+
+const impliedLoan = ref(0)
+const loanToValue = ref(0)
+
 async function onSubmit() {
   // validate all fields
 
-  emit('submit', formData)
+  emit('submit', {
+    loanAmount: impliedLoan.value,
+    propertyPrice: formData.purchasePrice!,
+    annualRepayRate: formData.annualRepayRate!,
+  })
 }
 
-watch(formData, (newData) => {
-  console.log('Form Data Updated:', newData)
-})
+watch(
+  formData,
+  async () => {
+    if (!formData.purchasePrice || !formData.totalSavings || !isFormValid.value) {
+      return 0
+    }
+    impliedLoan.value = calculateImpliedLoan(
+      formData.purchasePrice,
+      formData.totalSavings,
+      formData.realEstateCommission,
+    )
+
+    loanToValue.value = calculateLoanToValue(impliedLoan.value, formData.purchasePrice)
+  },
+  {
+    immediate: true,
+  },
+)
 </script>

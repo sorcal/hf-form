@@ -3,7 +3,7 @@
     <h1 class="text-xl font-semibold">Mortgage Calculator</h1>
     <MortgageForm class="mt-4" @submit="getRates" />
 
-    <MortgageRatesTable class="mt-8" :rates="rates" />
+    <MortgageRatesTable v-if="rates.length" class="mt-12" :rates="rates" />
   </main>
 </template>
 
@@ -24,12 +24,10 @@ async function getRates(data) {
 
   rates.value = []
 
-  const loanAmount = data.purchasePrice! - data.totalSavings!
-
   try {
     const res = await fetchRates({
-      purchasePrice: data.annualRepayRate!,
-      loanAmount: loanAmount,
+      propertyPrice: data.propertyPrice!,
+      loanAmount: data.loanAmount,
       annualRepayRate: data.annualRepayRate!,
     })
 

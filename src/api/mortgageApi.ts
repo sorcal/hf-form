@@ -4,7 +4,7 @@ export interface Rate {
 }
 
 export async function fetchRates(payload: {
-  purchasePrice: number
+  propertyPrice: number
   loanAmount: number
   annualRepayRate: number
 }): Promise<Record<string, Rate>> {
@@ -24,7 +24,7 @@ export async function fetchRates(payload: {
   //   referrer: 'https://hypofriend.de',
   //   referrerPolicy: 'same-origin',
   //   // body: '{"query":"query { root {rates_table( property_price: 340000, repayment:2, loan_amount: 315664, years_fixed: [5,10,15,20,25,30]) }}","variables":null}',
-  //   body: `{"query":"query { root {rates_table( property_price: ${payload.purchasePrice}, repayment: ${payload.annualRepayRate}, loan_amount: ${payload.loanAmount}, years_fixed: [5,10,15,20,25,30]) }}","variables":null}`,
+  //   body: `{"query":"query { root {rates_table( property_price: ${payload.propertyPrice}, repayment: ${payload.annualRepayRate}, loan_amount: ${payload.loanAmount}, years_fixed: [5,10,15,20,25,30]) }}","variables":null}`,
   //   method: 'POST',
   //   mode: 'cors',
   //   credentials: 'include',

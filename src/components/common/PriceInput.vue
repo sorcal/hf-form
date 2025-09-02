@@ -8,7 +8,7 @@
       class="border p-2 rounded-sm mt-1"
       :class="{
         'border-red-500': error,
-        'border-gray-700': !error,
+        'border-gray-600': !error,
       }"
       :value="modelValue"
       @blur="onBlur"
