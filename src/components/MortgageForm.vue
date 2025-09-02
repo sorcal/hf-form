@@ -51,6 +51,10 @@ interface FormData {
   realEstateCommission: boolean
 }
 
+const emit = defineEmits<{
+  submit: [data: FormData]
+}>()
+
 const formData = reactive<FormData>({
   purchasePrice: 150000,
   totalSavings: 30000,
@@ -119,8 +123,10 @@ function validateTotalSavings() {
   formDataErrors.totalSavings = ''
 }
 
-function onSubmit() {
-  console.log(onSubmit, formData)
+async function onSubmit() {
+  // validate all fields
+
+  emit('submit', formData)
 }
 
 watch(formData, (newData) => {
