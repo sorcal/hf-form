@@ -1,6 +1,7 @@
 # hf-form
 
-This template should help get you started developing with Vue 3 in Vite.
+Page with a form.
+After installing dependencies and running a project, the form will be available at http://localhost:5173/ 
 
 ## Recommended IDE Setup
 
