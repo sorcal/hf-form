@@ -1,7 +1,9 @@
 # hf-form
 
-Page with a form.
-After installing dependencies and running a project, the form will be available at http://localhost:5173/ 
+Made by Alexey Frolov (gsorcal@gmail.com)
+
+Page with a Mortgage calculator.
+After installing dependencies (`npm install`) and running a project (`npm run dev`), the form will be available at http://localhost:5173/ 
 
 ## Recommended IDE Setup
 
