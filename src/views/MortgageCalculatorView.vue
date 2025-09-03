@@ -8,11 +8,13 @@
       :processing="ratesLoading"
     />
 
-    <MortgageRatesTable
-      v-if="rates.length"
-      class="mt-12 shadow-lg rounded-lg border border-gray-50 px-4"
-      :rates="rates"
-    />
+    <div ref="ratesTable">
+      <MortgageRatesTable
+        v-if="rates.length"
+        class="mt-12 shadow-lg rounded-lg border border-gray-50 px-4"
+        :rates="rates"
+      />
+    </div>
 
     <!-- Probably better to show this error as a toast message  -->
     <div
@@ -26,11 +28,13 @@
 </template>
 
 <script setup lang="ts">
+import { useElementVisibility } from '@vueuse/core'
+import { nextTick, useTemplateRef, watch } from 'vue'
+import { ref } from 'vue'
+import { fetchMortgageRates, type Rate } from '@/api/mortgageApi.ts'
 import MortgageForm from '../components/Mortgage/MortgageForm.vue'
 import MortgageRatesTable from '@/components/Mortgage/MortgageRatesTable.vue'
 import ExclamationIcon from '@/components/icons/exclamation-circle.svg?component'
-import { ref } from 'vue'
-import { fetchMortgageRates, type Rate } from '@/api/mortgageApi.ts'
 
 interface RateWithYears extends Rate {
   years: string
@@ -73,4 +77,16 @@ function onFormChange() {
   // I'm also thinking about keeping the old data or the table row count but in a way that it's clear that the data is outdated
   rates.value = []
 }
+
+const ratesTableRef = useTemplateRef<HTMLDivElement>('ratesTable')
+const ratesTableIsVisible = useElementVisibility(ratesTableRef, {
+  threshold: 0.5,
+})
+
+watch(rates, async () => {
+  if (rates.value.length > 0 && !ratesTableIsVisible.value) {
+    await nextTick()
+    ratesTableRef.value?.scrollIntoView({ behavior: 'smooth' })
+  }
+})
 </script>
