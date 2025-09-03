@@ -5,6 +5,7 @@ export function validatePurchasePrice(purchasePrice: number | null) {
     return 'Purchase price is required.'
   }
 
+  // cannot tell what's the best max value here
   if (purchasePrice < MIN_PROPERTY_PRICE) {
     return `Purchase price must be at least ${MIN_PROPERTY_PRICE}.`
   }
@@ -22,7 +23,7 @@ export function validateTotalSavings(totalSavings: number | null, purchasePrice:
   }
 
   /**
-   * TODO should be a better condition for comparison between savings and price
+   * TODO should be a better condition for comparison of savings and price
    * e.g. it doesn't make sense to get a mortgage if purchasePrice=50000 and savings=49999
    */
   if (purchasePrice && purchasePrice <= totalSavings) {

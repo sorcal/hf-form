@@ -20,12 +20,14 @@
           @update:modelValue="updateTotalSavings($event)"
         />
 
+        <!--    I like the input with two buttons (yes/no) that's shown in the task description. Not doing it to save time -->
         <BooleanInput
           label="Real Estate Commission"
           v-model="formData.realEstateCommission"
           :disabled="processing"
         />
 
+        <!--    I like the input with two buttons (+ and -) that's shown in the task description. Not doing it to save time -->
         <NumberInput
           label="Annual Repayment Rate (%)"
           placeholder="Enter rate"
@@ -173,8 +175,6 @@ const loanToValue = computed(() => {
 })
 
 async function onSubmit() {
-  // validate all fields
-
   emit('submit', {
     loanAmount: impliedLoan.value,
     propertyPrice: formData.purchasePrice!,
@@ -190,25 +190,7 @@ const loanToValueToShow = computed(() => {
   return loanToValue.value ? `${loanToValue.value.toFixed(2)} %` : '0 %'
 })
 
-watch(
-  formData,
-  () => {
-    emit('change')
-
-    // if (!formData.purchasePrice || !formData.totalSavings || !isFormValid.value) {
-    //   return
-    // }
-    //
-    // impliedLoan.value = calculateImpliedLoan(
-    //   formData.purchasePrice,
-    //   formData.totalSavings,
-    //   formData.realEstateCommission,
-    // )
-    //
-    // loanToValue.value = calculateLoanToValue(impliedLoan.value, formData.purchasePrice)
-  },
-  {
-    // immediate: true,
-  },
-)
+watch(formData, () => {
+  emit('change')
+})
 </script>
