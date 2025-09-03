@@ -10,6 +10,7 @@
           value="1"
           @input="onSelect(true)"
           :checked="modelValue"
+          :disabled="disabled"
         />
         <label :for="`${fieldId}-1`">Yes</label>
       </span>
@@ -22,6 +23,7 @@
           value="0"
           @input="onSelect(false)"
           :checked="!modelValue"
+          :disabled="disabled"
         />
         <label :for="`${fieldId}-0`">No</label>
       </span>
@@ -35,6 +37,7 @@ import { useId } from 'vue'
 defineProps<{
   label: string
   modelValue: boolean
+  disabled: boolean
 }>()
 
 const emit = defineEmits<{

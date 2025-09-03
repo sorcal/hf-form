@@ -8,9 +8,11 @@
       class="border p-2 rounded-sm mt-1"
       :class="{
         'border-red-500': error,
-        'border-gray-700': !error,
+        'border-gray-600': !error,
+        'opacity-50': disabled,
       }"
       :value="modelValue"
+      :disabled="disabled"
       @blur="onBlur"
     />
     <div v-if="error" class="text-xs text-red-500" v-text="error" />
@@ -25,6 +27,7 @@ defineProps<{
   placeholder: string
   modelValue: number | null
   error: string
+  disabled: boolean
 }>()
 
 const emit = defineEmits<{

@@ -42,10 +42,10 @@
 
 <script setup lang="ts">
 defineProps<{
-  rates: Array<{
+  rates: {
     years: string
     monthlyRate: number
     borrowingRate: number
-  }>
+  }[]
 }>()
 </script>
