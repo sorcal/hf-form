@@ -21,6 +21,7 @@
     <div
       v-if="ratesLoadError"
       class="mt-12 shadow-lg rounded-lg border border-gray-50 flex gap-x-2 p-4"
+      data-test="rates-load-error"
     >
       <ExclamationIcon class="text-red-500" />
       <span v-text="ratesLoadError" />

@@ -9,6 +9,7 @@
           :error="formDataErrors.purchasePrice"
           :disabled="processing"
           @update:modelValue="updatePurchasePrice($event)"
+          data-test="property-price-input"
         />
 
         <NumberInput
@@ -18,6 +19,7 @@
           :error="formDataErrors.totalSavings"
           :disabled="processing"
           @update:modelValue="updateTotalSavings($event)"
+          data-test="savings-input"
         />
 
         <!--    I like the input with two buttons (yes/no) that's shown in the task description. Not doing it to save time -->
@@ -35,6 +37,7 @@
           :error="formDataErrors.annualRepayRate"
           :disabled="processing"
           @update:modelValue="updateAnnualRepayRate($event)"
+          data-test="repayment-rate-input"
         />
       </div>
       <div class="flex justify-end">
@@ -84,9 +87,9 @@ import SmallCardWithValue from '@/components/common/SmallCardWithValue.vue'
 import LoaderIcon from '@/components/icons/loader.svg?component'
 import { calculateImpliedLoan, calculateLoanToValue } from '@/utils/loans.ts'
 import {
-  validateRepayRate,
-  validatePurchasePrice,
-  validateTotalSavings,
+  validateRepayRateAndGetError,
+  validatePurchasePriceAndGetError,
+  validateTotalSavingsAndGetError,
 } from '@/components/Mortgage/validator.ts'
 
 interface FormData {
@@ -128,21 +131,27 @@ const formDataErrors = reactive<Record<keyof FormData, string>>({
 function updatePurchasePrice(newValue: number | null) {
   formData.purchasePrice = newValue
 
-  formDataErrors.purchasePrice = validatePurchasePrice(formData.purchasePrice)
-  formDataErrors.totalSavings = validateTotalSavings(formData.totalSavings, formData.purchasePrice)
+  formDataErrors.purchasePrice = validatePurchasePriceAndGetError(formData.purchasePrice)
+  formDataErrors.totalSavings = validateTotalSavingsAndGetError(
+    formData.totalSavings,
+    formData.purchasePrice,
+  )
 }
 
 function updateTotalSavings(newValue: number | null) {
   formData.totalSavings = newValue
 
-  formDataErrors.purchasePrice = validatePurchasePrice(formData.purchasePrice)
-  formDataErrors.totalSavings = validateTotalSavings(formData.totalSavings, formData.purchasePrice)
+  formDataErrors.purchasePrice = validatePurchasePriceAndGetError(formData.purchasePrice)
+  formDataErrors.totalSavings = validateTotalSavingsAndGetError(
+    formData.totalSavings,
+    formData.purchasePrice,
+  )
 }
 
 function updateAnnualRepayRate(newValue: number | null) {
   formData.annualRepayRate = newValue
 
-  formDataErrors.annualRepayRate = validateRepayRate(formData.annualRepayRate)
+  formDataErrors.annualRepayRate = validateRepayRateAndGetError(formData.annualRepayRate)
 }
 
 const isFormValid = computed(() => {
@@ -150,9 +159,6 @@ const isFormValid = computed(() => {
     !formDataErrors.purchasePrice && !formDataErrors.totalSavings && !formDataErrors.annualRepayRate
   )
 })
-
-// const impliedLoan = ref(0)
-// const loanToValue = ref(0)
 
 const impliedLoan = computed(() => {
   if (!isFormValid.value || !formData.purchasePrice || !formData.totalSavings) {

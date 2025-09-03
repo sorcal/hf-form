@@ -15,7 +15,7 @@
       :disabled="disabled"
       @blur="onBlur"
     />
-    <div v-if="error" class="text-xs text-red-500" v-text="error" />
+    <div v-if="error" class="text-xs text-red-500" v-text="error" data-test="input-error" />
   </div>
 </template>
 

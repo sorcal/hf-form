@@ -1,6 +1,6 @@
-const MIN_PROPERTY_PRICE = 10000
+export const MIN_PROPERTY_PRICE = 10000
 
-export function validatePurchasePrice(purchasePrice: number | null) {
+export function validatePurchasePriceAndGetError(purchasePrice: number | null) {
   if (purchasePrice === null) {
     return 'Purchase price is required.'
   }
@@ -13,7 +13,10 @@ export function validatePurchasePrice(purchasePrice: number | null) {
   return ''
 }
 
-export function validateTotalSavings(totalSavings: number | null, purchasePrice: number | null) {
+export function validateTotalSavingsAndGetError(
+  totalSavings: number | null,
+  purchasePrice: number | null,
+) {
   if (totalSavings === null) {
     return 'Total savings is required.'
   }
@@ -33,7 +36,7 @@ export function validateTotalSavings(totalSavings: number | null, purchasePrice:
   return ''
 }
 
-export function validateRepayRate(rate: number | null) {
+export function validateRepayRateAndGetError(rate: number | null) {
   if (rate === null) {
     return 'Annual repayment rate is required.'
   }
