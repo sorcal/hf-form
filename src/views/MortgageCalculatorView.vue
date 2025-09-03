@@ -13,6 +13,7 @@
         v-if="rates.length"
         class="mt-12 shadow-lg rounded-lg border border-gray-50 px-4"
         :rates="rates"
+        :loading="ratesLoading"
       />
     </div>
 
@@ -49,7 +50,6 @@ async function getRates(data: {
   loanAmount: number
   annualRepayRate: number
 }) {
-  rates.value = []
   ratesLoading.value = true
   ratesLoadError.value = ''
 
@@ -65,6 +65,7 @@ async function getRates(data: {
       ...value,
     }))
   } catch {
+    rates.value = []
     ratesLoadError.value =
       'We could not calculate rates for the provided data. Please change your input data and try again later.'
   } finally {

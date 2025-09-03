@@ -17,7 +17,13 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-200">
-            <tr v-for="rate in rates" :key="rate.years">
+            <tr
+              v-for="rate in rates"
+              :key="rate.years"
+              :class="{
+                'blur-sm': loading,
+              }"
+            >
               <td class="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900">
                 {{ rate.years }} Years
               </td>
@@ -42,5 +48,6 @@ defineProps<{
     monthlyRate: number
     borrowingRate: number
   }[]
+  loading: boolean
 }>()
 </script>
