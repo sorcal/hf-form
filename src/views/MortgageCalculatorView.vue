@@ -1,7 +1,7 @@
 <template>
   <main class="max-w-2xl mx-auto py-12">
     <h1 class="text-xl font-semibold">Mortgage Calculator</h1>
-    <MortgageForm class="mt-4" @submit="getRates" />
+    <MortgageForm class="mt-4" @submit="getRates" @change="rates = []" />
 
     <MortgageRatesTable v-if="rates.length" class="mt-12" :rates="rates" />
   </main>
