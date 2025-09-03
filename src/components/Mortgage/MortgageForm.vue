@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit">
     <div class="shadow-lg rounded-lg border border-gray-50 p-4">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="grid grid-cols-1 xs:grid-cols-2 gap-4">
         <NumberInput
           label="Property Purchase Price (€)"
           placeholder="Enter price"
@@ -39,7 +39,7 @@
         <button
           type="submit"
           :disabled="!isFormValid || processing"
-          class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors duration-200 flex items-center"
+          class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-sm hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center flex-1 xs:flex-none text-center"
           :class="{
             'opacity-50 cursor-not-allowed': !isFormValid || processing,
             'cursor-pointer': isFormValid || processing,
@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+    <div class="grid grid-cols-1 xs:grid-cols-2 gap-4 mt-8">
       <SmallCardWithValue title="Implied Loan">
         <span
           :class="{
@@ -183,18 +183,10 @@ async function onSubmit() {
 }
 
 const impliedLoanToShow = computed(() => {
-  // if (!isFormValid.value) {
-  //   return '0 €'
-  // }
-
   return impliedLoan.value ? `${Math.round(impliedLoan.value)} €` : '0 €'
 })
 
 const loanToValueToShow = computed(() => {
-  // if (!isFormValid.value) {
-  //   return '0 %'
-  // }
-
   return loanToValue.value ? `${loanToValue.value.toFixed(2)} %` : '0 %'
 })
 
